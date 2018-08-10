@@ -1,4 +1,4 @@
-function [deblurredImage, denoisedImage, firstPSF, finalPSF] = imageDeconv(imageFile, deblurringSize, standardDeviation, degOfSimilarity)
+function [deblurredImage, firstPSF, finalPSF] = imageDeconv(imageFile, deblurringSize, standardDeviation, degOfSimilarity)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -18,9 +18,6 @@ for i=1:1:degOfSimilarity-1
 end
 
 [deblurredImage, orgPSF] = deconvblind(imageFile, finalPSF);
-
-net = denoisingNetwork('DnCNN');
-denoisedImage = denoiseImage(deblurredImage,net);
 
 end
 

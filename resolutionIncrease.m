@@ -1,6 +1,7 @@
 function [betterImage] = resolutionIncrease(originalImage)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+%Resolution increasement using chaikin subdivision
+
+
 fontsize = 16;
 
 imageMatrix = originalImage;

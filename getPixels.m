@@ -36,12 +36,12 @@ xy=structBoundaries{1}; % Get n by 2 array of x,y coordinates.
 x = xy(:, 2); % Columns.
 y = xy(:, 1); % Rows.
 subplot(2, 3, 1); % Plot over original image.
-hold on; % Don't blow away the image.
+hold on;
 plot(x, y, 'LineWidth', 2);
 drawnow;
 
 
-% Label the binary image and computer the centroid and center of mass.
+% Label the binary image and compute the centroid and center of mass.
 measurements = regionprops(binaryCropp, imageFile, ...
     'area', 'Centroid', 'WeightedCentroid', 'Perimeter');
 area = measurements.Area;
@@ -63,21 +63,8 @@ str = sprintf(formatSpec, rows, columns);
 text(0.5,0.5, str);
 axis off;
 
-%{
-maxval = max(imageCropped(:));
-minval = min(imageCropped(:));
-valrange = double(maxval) - double(minval);
-grayImage = uint8( 255 * (double(imageCropped) - double(minval)) ./ valrange 
-%}
-
+%Dicom picture in a normal 0-255 color scale
 grayImage = normImageScale(imageCropped);
-
-%{
-%Show gray scale 0-255 format dicom image
-subplot(2,3,5);
-imshow(grayImage, []);
-title('dicom 0-255 color scale', 'FontSize', fontSize);
-%}
 
 selectedRegion = grayImage;
 
