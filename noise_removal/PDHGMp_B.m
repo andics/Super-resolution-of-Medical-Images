@@ -1,10 +1,10 @@
 function U = PDHGMp ( F, rho, theta, sigma )
-% That is the PDHGMp denoising alghotithm with a binary output
+% That is the PDHGMp denoising alghotithm
 % F is the original image, rho and theta are coefficients
 % such that their product doesn't exceed 1/9
 % and U is the clear image
 
-K = 5000; %K is the maximum number of iterations of the optimizing algorithm
+K = 1000; %K is the maximum number of iterations of the optimizing algorithm
 %eps = 1*e-10; % epsilon is a treshold for the conversion criterion
 
 % Initializing U, P1, P2, P1_bar, P2_bar to be zero matrices of the size of
@@ -28,7 +28,7 @@ for k = 1:K
     %First step of the algorithm is updating U
     DP2 = Lx' * P2x_bar + P2y_bar * Ly;
     X = U - (P1_bar + DP2) * rho * theta;
-    U = min(max(0, X), 255);
+    U = min(max(0, X), 1);
     
     %Second step is projecting (u+p1) - point onto an N-dimensional sphere
     %centered at the input image F with a radius of R 

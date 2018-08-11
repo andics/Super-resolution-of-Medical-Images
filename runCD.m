@@ -8,15 +8,12 @@ workspace;
 
 fontsize = 16;
 
-%imageFile = 'IM00300.dcm';
+sizePSF = 20;
+SDPSF = 10;
+degSim = 8;
 
-sizePSF = 12;
-SDPSF = 8;
-degSim = 15;
-
-sigma = 0.006;
-
-%imageFile = getPixels(imageFile);
+sigma = 120;
+sigmaB = 0.002;
 
 imageSR = resolutionIncrease(imageFile);
 
@@ -40,13 +37,17 @@ axis on;
 imageSR = resolutionIncrease(imageFile);
 
 [imageFile, firstPSF, finalPSF] = imageDeconv(imageSR, sizePSF, SDPSF, degSim);
-imageFile = normImageScale(imageFile);
+%imageFile = normImageScale(imageFile);
+imageFile = min(imageFile,255);
+imageFileCon = transpose(imageFile);
+imageFileCon = min(imageFileCon,255);
+imageFile = transpose(imageFileCon);
 
 %Displaying parameters
 subplot(2,4,8)
 axis off;
 
-str = {sprintf('Cycle number: %d \n', i), sprintf('Deblurring - PSF size = %d \n', sizePSF), sprintf('Deblurring - PSF standard deviation = %f \n', SDPSF), sprintf('Deblurring - PSF degrees of similarity = %d \n \n', degSim), sprintf('Denoising - sigma = %f ', sigma)};
+str = {sprintf('Cycle number: %d \n', numberOfCycles), sprintf('Deblurring - PSF size = %d \n', sizePSF), sprintf('Deblurring - PSF standard deviation = %f \n', SDPSF), sprintf('Deblurring - PSF degrees of similarity = %d \n \n', degSim), sprintf('Denoising - sigma = %f \n', sigma), sprintf('Denoising Binary - sigma = %f ', sigmaB)};
 text(0.0,0.5, str);
 
 subplot(2,4,2);
@@ -60,13 +61,18 @@ imshow(imageFile, []);
 title('After SR-Deblurring', 'FontSize', fontsize);
 axis on;
 
-denoisedImage = regularizeImageScale(imageFile);
-denoisedImage = denoiseImage(denoisedImage, sigma);
+denoisedImage = denoiseImage(imageFile, sigma);
+denoisedImageB = denoiseImageB(imageFile, sigmaB);
 
 %Noise removal
-subplot(2,4,7);
+subplot(2,4,4);
 imshow(denoisedImage, []);
 title('After SR-Deblurring-Denoising', 'FontSize', fontsize);
+
+%Binary noise removal
+subplot(2,4,7);
+imshow(denoisedImageB, []);
+title('After SR-Deblurring-Denoising-DenoisingB', 'FontSize', fontsize)
 
 subplot(2,4,6);
 imshow(finalPSF, []);
