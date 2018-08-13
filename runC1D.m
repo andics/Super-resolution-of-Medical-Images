@@ -8,23 +8,24 @@ workspace;
 
 fontsize = 16;
 
-%imageFile = 'IM00300.dcm';
+imageOriginal = imageFile;
 
-sizePSF = 15;
-SDPSF = 8;
-degSim = 4;
 
-sigma = 70;
-sigmaB = 0.0004;
+SDPSF = 2;
+sizePSF = round(SDPSF*6+1);
+degSim = 2;
 
-%imageFile = getPixels(imageFile);
+sigma = 50;
+sigmaB = 0.001;
 
+%{
 imageSR = resolutionIncrease(imageFile);
 
 subplot(2,3,3);
 imshow(imageSR, []);
 title('One time SR Image', 'FontSize', fontsize);
 axis on;
+%}
 
 for i=1:numberOfCycles
     
@@ -34,8 +35,8 @@ figure("Name", str);
 set(gcf,'units','normalized','outerposition',[0 0 1 1])
 
 subplot(2,4,1);
-imshow(imageFile, []);
-title('Before new SR', 'FontSize', fontsize);
+imshow(imageOriginal, []);
+title('Original Image', 'FontSize', fontsize);
 axis on;
 
 imageFile = resolutionIncrease(imageFile);
@@ -70,9 +71,9 @@ axis on;
 
 %denoisedImage = regularizeImageScale(imageFile);
 denoisedImage = denoiseImage(imageFile, sigma);
-finalImage = denoisedImage;
 
-denoisedImageB = denoiseImageB(denoisedImage, sigmaB);
+denoisedImageB = denoiseImageB(imageFile, sigmaB);
+finalImage = denoisedImageB;
 %[denoisedImageB, firstPSF, finalPSF] = imageDeconv(denoisedImageB, sizePSF, SDPSF, degSim);
 
 %Noise removal
@@ -83,7 +84,7 @@ title('After SR-Deblurring-Denoising', 'FontSize', fontsize);
 %Binary noise removal
 subplot(2,4,7);
 imshow(denoisedImageB, []);
-title('After SR-Deblurring-Denoising-DenoisingB', 'FontSize', fontsize);
+title('After SR-Deblurring-Denoising Normalized', 'FontSize', fontsize);
 
 subplot(2,4,6);
 imshow(finalPSF, []);

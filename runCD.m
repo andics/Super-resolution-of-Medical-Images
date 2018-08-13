@@ -8,12 +8,12 @@ workspace;
 
 fontsize = 16;
 
-sizePSF = 20;
-SDPSF = 10;
-degSim = 8;
+SDPSF = 1.6;
+sizePSF = round(SDPSF*6+1);
+degSim = 2;
 
-sigma = 120;
-sigmaB = 0.002;
+sigma = 50;
+sigmaB = 0.008;
 
 imageSR = resolutionIncrease(imageFile);
 
