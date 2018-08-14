@@ -4,11 +4,6 @@ function [deblurredImage, firstPSF, finalPSF] = imageDeconv(imageFile, deblurrin
 
 fontsize = 16;
 
-%{
-deblurringSize = 12;
-standardDeviation = 8;
-%}
-
 finalPSF = fspecial('gaussian', deblurringSize, standardDeviation);
 firstPSF = finalPSF;
 

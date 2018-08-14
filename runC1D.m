@@ -18,15 +18,6 @@ degSim = 2;
 sigma = 50;
 sigmaB = 0.001;
 
-%{
-imageSR = resolutionIncrease(imageFile);
-
-subplot(2,3,3);
-imshow(imageSR, []);
-title('One time SR Image', 'FontSize', fontsize);
-axis on;
-%}
-
 for i=1:numberOfCycles
     
 formatSpec = "Cycle number %d (Chaikin + Once Deblurring)";
@@ -50,12 +41,15 @@ end
 
 imageSuperR = imageFile;
 
-[imageFile, firstPSF, finalPSF] = imageDeconv(imageFile, sizePSF, SDPSF, degSim);
-%imageFile = normImageScale(imageFile);
-imageFile = min(imageFile,255);
-imageFileCon = transpose(imageFile);
-imageFileCon = min(imageFileCon,255);
-imageFile = transpose(imageFileCon);
+testSDNiqe(imageFile)
+
+[imageDeblurred, firstPSF, finalPSF] = imageDeconv(imageFile, sizePSF, SDPSF, degSim);
+
+%Normalizing values of image over 255
+imageDeblurred = min(imageFile,255);
+imageDeblurredCon = transpose(imageDeblurred);
+imageDeblurredCon = min(imageDeblurredCon,255);
+imageDeblurred = transpose(imageDeblurredCon);
 
 %Displaying parameters
 subplot(2,4,8)
@@ -65,15 +59,14 @@ str = {sprintf('Cycle number: %d \n', numberOfCycles), sprintf('Deblurring - PSF
 text(0.0,0.5, str);
 
 subplot(2,4,3);
-imshow(imageFile, []);
+imshow(imageDeblurred, []);
 title('After SR-Deblurring', 'FontSize', fontsize);
 axis on;
 
 %denoisedImage = regularizeImageScale(imageFile);
-denoisedImage = denoiseImage(imageFile, sigma);
+denoisedImage = denoiseImage(imageDeblurred, sigma);
 
-denoisedImageB = denoiseImageB(imageFile, sigmaB);
-finalImage = denoisedImageB;
+denoisedImageB = denoiseImageB(imageDeblurred, sigmaB);
 %[denoisedImageB, firstPSF, finalPSF] = imageDeconv(denoisedImageB, sizePSF, SDPSF, degSim);
 
 %Noise removal
@@ -96,8 +89,9 @@ imshow(firstPSF, []);
 title('Initial PSF', 'FontSize', fontsize);
 axis on;
 
+finalImage = denoisedImageB;
 
-%finalImage = imageFile;
+imageCompare(finalImage, imageOriginal)
 
 end
 
