@@ -15,8 +15,8 @@ SDPSF = 5;
 sizePSF = round(6*SDPSF+1);
 degSim = 2;
 
-sigma = 0.0024;
-sigmaB = 0.0024;
+sigma = 0.001;
+sigmaB = 0.001;
 
 for i=1:numberOfCycles
     
@@ -50,8 +50,8 @@ testSD(imageFile,testLimitSD)
 %Normalizing values of image over 255
 imageDeblurred = normColorVal(imageDeblurred);
 
-testLimitSigma = 0.03;
-testSigma(imageDeblurred,testLimitSigma)
+testLimitSigma = 0.3;
+testSigma(imageDeblurred,
 
 %Displaying parameters
 subplot(2,4,8)
@@ -65,9 +65,11 @@ imshow(imageDeblurred, []);
 title('After SR-Deblurring', 'FontSize', fontsize);
 axis on;
 
+%denoisedImage = regularizeImageScale(imageFile);
 denoisedImage = denoiseImage(imageDeblurred, sigma);
 
 denoisedImageB = denoiseImageB(imageDeblurred, sigmaB);
+%[denoisedImageB, firstPSF, finalPSF] = imageDeconv(denoisedImageB, sizePSF, SDPSF, degSim);
 
 %Noise removal
 subplot(2,4,4);
