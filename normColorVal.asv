@@ -1,7 +1,0 @@
-function [finalImage] = normColorVal(imageFile)
-%Normalizing values of image over 255
-
-imageFinal = mat2
-
-end
-

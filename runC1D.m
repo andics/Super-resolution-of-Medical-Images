@@ -15,8 +15,8 @@ SDPSF = 5;
 sizePSF = round(6*SDPSF+1);
 degSim = 2;
 
-sigma = 0.0024;
-sigmaB = 0.0024;
+sigma = 0.001;
+sigmaB = 0.001;
 
 for i=1:numberOfCycles
     
@@ -42,7 +42,7 @@ end
 imageSuperR = imageFile;
 
 testLimitSD = 10;
-testSD(imageFile,testLimitSD)
+%testSD(imageFile,testLimitSD)
 
 
 [imageDeblurred, firstPSF, finalPSF] = imageDeconv(imageFile, sizePSF, SDPSF, degSim);
@@ -51,7 +51,7 @@ testSD(imageFile,testLimitSD)
 imageDeblurred = normColorVal(imageDeblurred);
 
 testLimitSigma = 0.03;
-testSigma(imageDeblurred,testLimitSigma)
+%testSigma(imageDeblurred,testLimitSigma)
 
 %Displaying parameters
 subplot(2,4,8)
@@ -92,6 +92,27 @@ axis on;
 finalImage = denoisedImageB;
 
 imageCompare(finalImage, imageOriginal)
+
+formatSpec = "Image background removed";
+str = sprintf(formatSpec, i);
+figure("Name", str);
+set(gcf,'units','normalized','outerposition',[0 0 1 1])
+
+subplot(1,3,3);
+imshow(imageRemoveBg(finalImage), []);
+title('Removed background image denoised', 'FontSize', fontsize);
+axis on;
+
+subplot(1,3,2);
+imshow(imageRemoveBg(imageDeblurred), []);
+title('Removed background image deblurred', 'FontSize', fontsize);
+axis on;
+
+subplot(1,3,1);
+imshow(imageRemoveBg(imageFile), []);
+title('Removed background image SR', 'FontSize', fontsize);
+axis on;
+
 
 end
 
