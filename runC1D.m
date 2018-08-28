@@ -93,7 +93,7 @@ finalImage = denoisedImageB;
 
 imageCompare(finalImage, imageOriginal)
 
-formatSpec = "Image background removed";
+formatSpec = "Image binary background removed";
 str = sprintf(formatSpec, i);
 figure("Name", str);
 set(gcf,'units','normalized','outerposition',[0 0 1 1])
@@ -108,11 +108,17 @@ imshow(imageRemoveBg(imageDeblurred), []);
 title('Removed background image deblurred', 'FontSize', fontsize);
 axis on;
 
+objectBinaryMask = imageRemoveBg(imageFile);
+
 subplot(1,3,1);
-imshow(imageRemoveBg(imageFile), []);
+imshow(objectBinaryMask, []);
 title('Removed background image SR', 'FontSize', fontsize);
 axis on;
 
+removedBgImage = extractRegion(finalImage, objectBinaryMask);
+finalImage = equalSizeImage(finalImage, removedBgImage);
+
+imageCompare(removedBgImage, imageOriginal)
 
 end
 

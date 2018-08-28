@@ -2,6 +2,11 @@ function [selectedRegion] = getPixels(file)
 %UNTITLED5 Summary of this function goes here
 %   Detailed explanation goes here
 
+clc;	% Clear command window.	% Delete all variables.
+close all;	% Close all figure windows except those created by imtool.
+imtool close all;	% Close all figure windows created by imtool.
+workspace;
+
 fontSize = 16;
 
 imageFileInfo = dicominfo(file);

@@ -9,11 +9,12 @@ imageOriginal = double(normImageScale(imageOriginal));
 
 if size(imageOriginal)~=size(imageFinal)
     imageOriginal = imresize(imageOriginal, size(imageFinal), 'nearest');
+end
 
 %Refference metric systems
 snratio = psnr(imageFinal, imageOriginal);
 mserror = immse(imageFinal, imageOriginal);
-structSim = ssim(imageFinal,imageOriginal);
+structSim = ssim(imageFinal, imageOriginal);
 
 
 %Non-refference metrix systems
