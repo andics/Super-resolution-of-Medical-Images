@@ -118,13 +118,12 @@ axis on;
 removedBgImage = extractRegion(denoisedImageB, objectBinaryMask);
 denoisedImageB = equalSizeImage(denoisedImageB, removedBgImage);
 
-clusteredImage = clusterColors(removedBgImage,3);
+finalImage = removedBgImage;
+
+clusteredImage = clusterColors(finalImage);
 
 imageCompare(removedBgImage, imageOriginal)
-imageCompare(clusteredImage, removedBgImage)
-imageCompare(clusteredImage, imageOriginal)
-
-finalImage = removedBgImage;
+imageCompare(
 
 end
 

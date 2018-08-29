@@ -1,0 +1,17 @@
+function clusterColors(inputImage)
+%cluster image regions and segnet the suture
+
+nrows = size(inputImage,1);
+ncols = size(inputImage,2);
+
+nColors = 3;
+% repeat the clustering 3 times to avoid local minima
+opts = statset('Display','final');
+[idx,C] = kmeans(inputImage,nColors,'Distance','sqEuclidean',...
+    'Replicates',3,'Options',opts);
+
+pixel_labels = reshape(cluster_idx,nrows,ncols);
+imshow(pixel_labels,[]), title('image labeled by cluster index');
+
+end
+

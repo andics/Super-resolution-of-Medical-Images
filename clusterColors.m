@@ -1,10 +1,16 @@
-function [clusterMatrix1, clusterMatrix2] = clusterColors(inputImage)
-%cluster image regions and segnet the suture
+function [finalImage] = clusterColors(inputImage, nColors)
+%cluster image regions and segment the suture
 
-nColors = 3;
+nrows = size(inputImage,1);
+ncols = size(inputImage,2);
+inputImage = reshape(inputImage,nrows*ncols,1);
+
 % repeat the clustering 3 times to avoid local minima
-[cluster_idx, cluster_center] = kmeans(ab,nColors,'distance','sqEuclidean', ...
-                                      'Replicates',3);
+opts = statset('Display','final');
+[idx,C] = kmeans(inputImage,nColors,'Distance','sqEuclidean',...
+    'Replicates',5,'Options',opts);
+
+finalImage = reshape(idx,nrows,ncols);
 
 end
 
